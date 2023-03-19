@@ -1,0 +1,33 @@
+services:
+  namenode:
+    image: hadoop
+    hostname: namenode
+    ports:
+      - 9870:9870
+      - 8088:8088
+    networks:
+      - hadoop
+    volumes:
+      - ./mrjob:/mrjob
+      - hadoop:/var/lib/hadoop-hdfs
+    environment:
+      HADOOP_MODE: namenode
+
+  datanode:
+    image: hadoop
+    networks:
+      - hadoop
+    volumes:
+      - ./mrjob:/mrjob
+      - hadoop:/var/lib/hadoop-hdfs
+    depends_on:
+      - namenode
+    environment:
+      HADOOP_MODE: datanode
+
+networks:
+  hadoop:
+
+
+volumes:
+  hadoop:
