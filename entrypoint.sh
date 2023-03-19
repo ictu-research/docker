@@ -26,10 +26,10 @@ readonly HDFS_CACHE_DIR="file:///var/lib/hadoop-hdfs/cache/${NODE}"
 
 declare -A cfgArr
 
-cfgArr["hadoop.tmp.dir"]=$HDFS_CACHE_DIR
-cfgArr["dfs.namenode.name.dir"]=$HDFS_CACHE_DIR/name
-cfgArr["dfs.namenode.checkpoint.dir"]=$HDFS_CACHE_DIR/namesecondary
-cfgArr["dfs.datanode.data.dir"]=$HDFS_CACHE_DIR/data
+cfgArr[hadoop.tmp.dir]=$HDFS_CACHE_DIR
+cfgArr[dfs.namenode.name.dir]=$HDFS_CACHE_DIR/name
+cfgArr[dfs.namenode.checkpoint.dir]=$HDFS_CACHE_DIR/namesecondary
+cfgArr[dfs.datanode.data.dir]=$HDFS_CACHE_DIR/data
 
 for key in "${!cfgArr[@]}"; do
   configure_hadoop $HADOOP_CONF_DIR/hdfs-site.xml $key ${cfgArr[$key]}
