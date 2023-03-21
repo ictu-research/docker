@@ -43,6 +43,13 @@ case $HADOOP_MODE in
 "namenode")
   yes n | hadoop namenode -format
   hdfs --daemon start namenode
+  solr start -Dsolr.directoryFactory=HdfsDirectoryFactory \
+    -Dsolr.lock.type=hdfs \
+    -Dsolr.data.dir=hdfs://namenode:8020/solr \
+    -Dsolr.updatelog=hdfs://namenode:8020/solr/logs \
+    -Dsolr.solr.home=/solr -force
+  # remove solr lock
+  hdfs dfs -rm /solr/index/write.lock
   yarn resourcemanager
   ;;
 "datanode")
@@ -53,3 +60,5 @@ case $HADOOP_MODE in
   echo "KHMT K18A"
   ;;
 esac
+
+exec "$@"

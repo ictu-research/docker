@@ -5,10 +5,12 @@ services:
     ports:
       - 9870:9870
       - 8088:8088
+      - 8983:8983
     networks:
       - hadoop
     volumes:
       - ./mrjob:/mrjob
+      - ./solr:/solr
       - hadoop:/var/lib/hadoop-hdfs
     environment:
       HADOOP_MODE: namenode
