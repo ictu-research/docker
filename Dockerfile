@@ -14,7 +14,7 @@ RUN pip install mrjob
 
 ENV HADOOP_HOME=/usr/lib/hadoop
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-ENV PATH=$PATH:/usr/lib/solr/bin
+ENV PATH=$PATH:/usr/lib/solr/bin:/usr/lib/zookeeper/bin
 
 COPY docker-entrypoint.sh .
 
