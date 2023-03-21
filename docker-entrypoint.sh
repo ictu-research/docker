@@ -43,6 +43,7 @@ case $HADOOP_MODE in
 "namenode")
   yes n | hadoop namenode -format
   hdfs --daemon start namenode
+  cp -a $SOLR_HOME /
   solr start -Dsolr.directoryFactory=HdfsDirectoryFactory \
     -Dsolr.lock.type=hdfs \
     -Dsolr.data.dir=hdfs://namenode:8020/solr \

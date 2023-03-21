@@ -13,6 +13,7 @@ RUN mkdir mrjob solr
 RUN pip install mrjob
 
 ENV HADOOP_HOME=/usr/lib/hadoop
+ENV SOLR_HOME=/usr/lib/solr/server/solr
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH=$PATH:/usr/lib/solr/bin:/usr/lib/zookeeper/bin
 
