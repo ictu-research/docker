@@ -20,9 +20,10 @@ function configure_hadoop() {
 }
 
 # node-0, node-1, node-2, ...
-readonly NODE="node-$(hostname -i | awk -F "." '{print $NF}' | awk '{print $1-2}')"
-readonly HADOOP_CONF_DIR="/etc/hadoop/conf"
-readonly HDFS_CACHE_DIR="file:///var/lib/hadoop-hdfs/cache/${NODE}"
+readonly NODE=node-$(hostname -i | awk -F "." '{print $NF}' | awk '{print $1-2}')
+readonly HADOOP_CONF_DIR=/etc/hadoop/conf
+readonly HDFS_CACHE_DIR=file:///var/lib/hadoop-hdfs/cache/$NODE
+readonly SOLR_DATA_DIR=/var/lib/solr/$NODE
 
 declare -A cfgArr
 
@@ -39,17 +40,23 @@ configure_hadoop $HADOOP_CONF_DIR/core-site.xml fs.defaultFS hdfs://namenode:802
 configure_hadoop $HADOOP_CONF_DIR/yarn-site.xml yarn.resourcemanager.hostname namenode
 configure_hadoop $HADOOP_CONF_DIR/mapred-site.xml mapreduce.application.classpath $(mapred classpath)
 
+[[ -d $SOLR_DATA_DIR ]] || (mkdir -p $SOLR_DATA_DIR && cp -r $SOLR_HOME/* $SOLR_DATA_DIR)
+
 case $HADOOP_MODE in
 "namenode")
   yes n | hadoop namenode -format
   hdfs --daemon start namenode
+  solr start -s $SOLR_DATA_DIR -c -force
   yarn resourcemanager
   ;;
 "datanode")
   hdfs --daemon start datanode
+  solr start -s $SOLR_DATA_DIR -c -z namenode:9983 -force
   yarn nodemanager
   ;;
 *)
   echo "KHMT K18A"
   ;;
 esac
+
+exec "$@"

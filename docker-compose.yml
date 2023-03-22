@@ -5,23 +5,31 @@ services:
     ports:
       - 9870:9870
       - 8088:8088
+      - 8983:8983
     networks:
       - hadoop
     volumes:
-      - ./mrjob:/mrjob
+      - solr:/var/lib/solr
       - hadoop:/var/lib/hadoop-hdfs
     environment:
       HADOOP_MODE: namenode
+    healthcheck:
+      test: wget --quiet --tries=1 --spider http://localhost:8983
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   datanode:
     image: hadoop
+    hostname: datatanode
     networks:
       - hadoop
     volumes:
-      - ./mrjob:/mrjob
+      - solr:/var/lib/solr
       - hadoop:/var/lib/hadoop-hdfs
     depends_on:
-      - namenode
+      namenode:
+        condition: service_healthy
     environment:
       HADOOP_MODE: datanode
 
@@ -30,4 +38,5 @@ networks:
 
 
 volumes:
+  solr:
   hadoop:
