@@ -1,5 +1,7 @@
+<img src="https://hadoop.apache.org/elephant.png" width="15%" align="right">
+
 # ICTU Hadoop Docker
-Hadoop trên Docker...
+Hadoop + Solr trên Docker...
 
 ## Build Image
 
