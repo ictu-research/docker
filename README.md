@@ -1,17 +1,16 @@
 # ICTU Hadoop Docker
 Hadoop trên Docker...
 
+## Build Image
+
+```bash
+docker build . -t hadoop
+```
+
 ## Running
 
 ```bash
 docker-compose up --scale datanode=4
-```
-
-## Run MapReduceJob
-
-```bash
-cd mrjob
-python3 WordCount.py -r hadoop demo.txt
 ```
 
 ## Author
