@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y wget default-jdk gnupg xmlstarlet lsof
+RUN apt-get update && apt-get install -y wget default-jdk gnupg lsof
 
 # Apache BigTop 3.2.0
 RUN wget -O /etc/apt/sources.list.d/bigtop-3.2.0.list http://archive.apache.org/dist/bigtop/bigtop-3.2.0/repos/ubuntu-22.04/bigtop.list
@@ -14,5 +14,8 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH=$PATH:/usr/lib/solr/bin:/usr/lib/zookeeper/bin
 
 COPY docker-entrypoint.sh .
+COPY hadoop_configure /usr/bin
+
+RUN chmod +x /usr/bin/hadoop_configure
 
 ENTRYPOINT [ "./docker-entrypoint.sh" ]
