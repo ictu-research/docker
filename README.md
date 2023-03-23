@@ -6,6 +6,7 @@ Hadoop + Solr trên Docker...
 ## Build Image
 
 ```bash
+git clone https://github.com/ictu-research/docker.git .
 docker build . -t hadoop
 ```
 
