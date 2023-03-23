@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+import xml.etree.ElementTree as ET
+import argparse
+
+parser = argparse.ArgumentParser('Hadoop Configuration')
+parser.add_argument('file', type=str)
+parser.add_argument('name', type=str)
+parser.add_argument('value', type=str)
+
+args = parser.parse_args()
+
+tree = ET.parse(args.file)
+root = tree.getroot()
+
+property = root.find(f'./property[name="{args.name}"]')
+if isinstance(property, ET.Element):
+    value = property.find('value')
+    if isinstance(value, ET.Element):
+        value.text = args.value
+else:
+    property, name, value = [ET.Element(name)
+                             for name in ['property', 'name', 'value']]
+    name.text, value.text = args.name, args.value
+    property.append(name)
+    property.append(value)
+    root.append(property)
+
+tree.write(args.file)
