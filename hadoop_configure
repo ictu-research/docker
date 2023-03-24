@@ -12,11 +12,9 @@ args = parser.parse_args()
 tree = ET.parse(args.file)
 root = tree.getroot()
 
-property = root.find(f'./property[name="{args.name}"]')
-if isinstance(property, ET.Element):
-    value = property.find('value')
-    if isinstance(value, ET.Element):
-        value.text = args.value
+value = root.find(f'./property[name="{args.name}"]/value')
+if isinstance(value, ET.Element):
+    value.text = args.value
 else:
     property, name, value = [ET.Element(name)
                              for name in ['property', 'name', 'value']]
