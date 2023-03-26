@@ -21,7 +21,6 @@ services:
 
   datanode:
     image: hadoop
-    hostname: datatanode
     networks:
       - hadoop
     volumes:
