@@ -15,6 +15,7 @@ cfgArr[hadoop.tmp.dir]=$HDFS_CACHE_DIR
 cfgArr[dfs.namenode.name.dir]=$HDFS_CACHE_DIR/name
 cfgArr[dfs.namenode.checkpoint.dir]=$HDFS_CACHE_DIR/namesecondary
 cfgArr[dfs.datanode.data.dir]=$HDFS_CACHE_DIR/data
+cfgArr[dfs.webhdfs.enabled]=true
 
 for key in "${!cfgArr[@]}"; do
   hadoop_configure $HADOOP_CONF_DIR/hdfs-site.xml $key ${cfgArr[$key]}
