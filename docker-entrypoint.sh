@@ -29,19 +29,26 @@ hadoop_configure $HADOOP_CONF_DIR/mapred-site.xml mapreduce.application.classpat
 
 case $HADOOP_MODE in
 "namenode")
-  yes n | hadoop namenode -format
+  echo -e "\e[31mformat namenode...\e[0m"
+  yes n | hdfs namenode -format >/dev/null 2>&1
+  echo -e "\e[32mstart namenode...\e[0m"
   hdfs --daemon start namenode
-  solr start -s $SOLR_DATA_DIR -c -force
-  yarn resourcemanager
+  echo -e "\e[31mstart solr (${NODE})...\e[0m"
+  solr start -s $SOLR_DATA_DIR -c -force >/dev/null
+  echo -e "\e[34mstart resource manager...\e[0m"
+  yarn --daemon start resourcemanager
   ;;
 "datanode")
+  echo -e "\e[32mstart datanode (${NODE})...\e[0m"
   hdfs --daemon start datanode
-  solr start -s $SOLR_DATA_DIR -c -z namenode:9983 -force
-  yarn nodemanager
+  echo -e "\e[31mstart solr (${NODE})...\e[0m"
+  solr start -s $SOLR_DATA_DIR -c -z namenode:9983 -force >/dev/null
+  echo -e "\e[34mstart node manager (${NODE})...\e[0m"
+  yarn --daemon start nodemanager
   ;;
 *)
   echo "KHMT K18A"
   ;;
 esac
 
-exec "$@"
+sleep infinity
