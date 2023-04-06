@@ -8,6 +8,9 @@ readonly NODE=node-$(hostname -i | awk -F "." '{print $NF}' | awk '{print $1-2}'
 readonly HADOOP_CONF_DIR=/etc/hadoop/conf
 readonly HDFS_CACHE_DIR=file:///var/lib/hadoop-hdfs/cache/$NODE
 readonly SOLR_DATA_DIR=/var/lib/solr/$NODE
+readonly SOLR_FLAGS="-Dsolr.directoryFactory=HdfsDirectoryFactory \
+-Dsolr.lock.type=hdfs \
+-Dsolr.hdfs.home=hdfs://namenode:8020/solr/${NODE}"
 
 declare -A cfgArr
 
@@ -34,7 +37,7 @@ case $HADOOP_MODE in
   echo -e "\e[32mstart namenode...\e[0m"
   hdfs --daemon start namenode
   echo -e "\e[31mstart solr (${NODE})...\e[0m"
-  solr start -s $SOLR_DATA_DIR -c -force >/dev/null
+  solr start -c $SOLR_FLAGS -force >/dev/null
   echo -e "\e[34mstart resource manager...\e[0m"
   yarn --daemon start resourcemanager
   ;;
@@ -42,7 +45,7 @@ case $HADOOP_MODE in
   echo -e "\e[32mstart datanode (${NODE})...\e[0m"
   hdfs --daemon start datanode
   echo -e "\e[31mstart solr (${NODE})...\e[0m"
-  solr start -s $SOLR_DATA_DIR -c -z namenode:9983 -force >/dev/null
+  solr start -c $SOLR_FLAGS -z namenode:9983 -force >/dev/null
   echo -e "\e[34mstart node manager (${NODE})...\e[0m"
   yarn --daemon start nodemanager
   ;;
