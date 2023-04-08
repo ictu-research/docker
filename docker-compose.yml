@@ -1,6 +1,6 @@
 services:
   namenode:
-    image: hadoop
+    build: .
     hostname: namenode
     ports:
       - 9870:9870
@@ -16,11 +16,11 @@ services:
     healthcheck:
       test: wget --quiet --tries=1 --spider http://localhost:8983
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 3
 
   datanode:
-    image: hadoop
+    build: .
     networks:
       - hadoop
     volumes:

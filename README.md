@@ -7,13 +7,13 @@ Hadoop + Solr trên Docker...
 
 ```bash
 git clone https://github.com/ictu-research/docker.git .
-docker build . -t hadoop
+docker compose build
 ```
 
 ## Running
 
 ```bash
-docker-compose up --scale datanode=4
+docker compose up --scale datanode=2
 ```
 
 ## Information
