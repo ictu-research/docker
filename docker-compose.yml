@@ -15,9 +15,9 @@ services:
       HADOOP_MODE: namenode
     healthcheck:
       test: wget --quiet --tries=1 --spider http://localhost:8983
-      interval: 10s
-      timeout: 10s
-      retries: 3
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
   datanode:
     build: .
