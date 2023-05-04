@@ -17,5 +17,6 @@ COPY docker-entrypoint.sh .
 COPY hadoop_configure /usr/bin
 
 RUN chmod +x /usr/bin/hadoop_configure
+RUN schematool -dbType derby -initSchema
 
 ENTRYPOINT [ "./docker-entrypoint.sh" ]
