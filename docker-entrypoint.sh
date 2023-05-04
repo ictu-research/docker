@@ -23,6 +23,8 @@ for key in "${!cfgArr[@]}"; do
 done
 
 hadoop_configure $HADOOP_CONF_DIR/core-site.xml fs.defaultFS hdfs://namenode:8020
+hadoop_configure $HADOOP_CONF_DIR/core-site.xml hadoop.proxyuser.root.groups '*'
+hadoop_configure $HADOOP_CONF_DIR/core-site.xml hadoop.proxyuser.root.hosts '*'
 hadoop_configure $HADOOP_CONF_DIR/yarn-site.xml yarn.resourcemanager.hostname namenode
 hadoop_configure $HADOOP_CONF_DIR/mapred-site.xml mapreduce.application.classpath $(mapred classpath)
 
@@ -38,6 +40,8 @@ case $HADOOP_MODE in
   solr start -s $SOLR_DATA_DIR -c -force >/dev/null
   echo -e "\e[34mstart resource manager...\e[0m"
   yarn --daemon start resourcemanager
+  echo -e "start hiveserver2"
+  hiveserver2 -hiveconf hive.server2.authentication=nosasl -hiveconf hive.server2.enable.doAs=false >/dev/null 2>&1
   ;;
 "datanode")
   echo -e "\e[32mstart datanode (${NODE})...\e[0m"
